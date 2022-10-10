@@ -1,0 +1,10 @@
+public class Menu{
+
+    String[][] tempMenu = {{"4 Cheese Pizza", false, "Cheese, Tomato, Cheese, Cheese, Cheese", 4.99},
+                           {"Lettuce Soup", true, "Lettuce, Water", 13.99}};
+    
+    public boolean isVegan(String itemName){
+        //bababouille
+    }
+
+}
