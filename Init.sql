@@ -36,10 +36,38 @@ CREATE TABLE IF NOT EXISTS Dessert(
 CREATE TABLE IF NOT EXISTS PizzaIngredient(
     PizzaID INT NOT NULL,
     IngredientID INT NOT NULL,
-    PRIMARY KEY (PizzaID, IngredientID),
     FOREIGN KEY (IngredientID) REFERENCES Ingredient(ID),
     FOREIGN KEY (PizzaID) REFERENCES Pizza(ID)
 );
+
+-- --
+CREATE TABLE IF NOT EXISTS User(
+    Username VARCHAR(255) NOT NULL PRIMARY KEY,
+    Name VARCHAR(255) NOT NULL,
+    Address VARCHAR(255) NOT NULL,
+    Postcode VARCHAR(255) NOT NULL,
+    PhoneNumber VARCHAR(255) NOT NULL
+);
+
+-- --
+CREATE TABLE IF NOT EXISTS OrderEntry(
+    ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    Username VARCHAR(255) NOT NULL,
+    OrderTime VARCHAR(255) NOT NULL,
+    Cancelled BOOLEAN,
+    FOREIGN KEY (Username) REFERENCES User(Username)
+);
+
+-- --
+CREATE TABLE IF NOT EXISTS OrderContents(
+    OrderID INT NOT NULL,
+    ConsumableID int NOT NULL,
+    FOREIGN KEY (OrderID) REFERENCES OrderEntry(ID),
+    FOREIGN KEY (ConsumableID) REFERENCES Consumable(ID)
+);
+-- --
+
+
 -- --
 -- Add pizzas --
 INSERT INTO Consumable (Name)
@@ -165,3 +193,10 @@ SELECT *,
     "Dessert" as Type
 FROM DessertMenu
 ORDER BY ConsumableID;
+
+-- --
+-- Sample order --
+
+INSERT INTO User VALUES ("Bloom", "Derrick Timmermans", "Molenstraat 60B", "3600", "+60102680158");
+INSERT INTO OrderEntry (Username, OrderTime) VALUES("Bloom", "2022-10-07T15:16:53Z");
+INSERT INTO OrderContents VALUES (1,1),(1,1),(1,1),(1,1),(1,1) ;
