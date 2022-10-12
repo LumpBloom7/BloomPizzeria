@@ -168,16 +168,20 @@ SELECT Drink.ID AS ConsumableID,
     Drink.Price AS Price
 FROM Drink
     INNER JOIN Consumable ON Drink.ID = Consumable.ID;
+
 -- --
 -- Create price chart for desserts --
+
 CREATE OR REPLACE VIEW DessertMenu AS
 SELECT Dessert.ID AS ConsumableID,
     Consumable.Name AS Name,
     Dessert.Price AS Price
 FROM Dessert
     INNER JOIN Consumable ON Dessert.ID = Consumable.ID;
+
 -- --
 -- Create unified price chart --
+
 CREATE OR REPLACE VIEW Menu AS
 SELECT *,
     "Pizza" as Type
@@ -199,4 +203,4 @@ ORDER BY ConsumableID;
 
 INSERT INTO User VALUES ("Bloom", "Derrick Timmermans", "Molenstraat 60B", "3600", "+60102680158");
 INSERT INTO OrderEntry (Username, OrderTime) VALUES("Bloom", "2022-10-07T15:16:53Z");
-INSERT INTO OrderContents VALUES (1,1),(1,1),(1,1),(1,1),(1,1) ;
+INSERT INTO OrderContents VALUES (1,1),(1,1),(1,1),(1,1),(1,1);
