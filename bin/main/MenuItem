@@ -1,0 +1,9 @@
+abstract class MenuItem{
+
+    int ID;
+    String name;
+
+    public int getID();
+
+    public String getName();
+}
