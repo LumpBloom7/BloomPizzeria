@@ -15,29 +15,32 @@ public class Menu {
     private Scanner input = new Scanner(System.in);
 
     public void mainMenu() {
-        System.out.println("Please choose a category:");
-        System.out.println("-------------------------");
-        System.out.println("1. Pizzas");
-        System.out.println("2. Drinks");
-        System.out.println("3. Desserts");
+        while (true) {
+            System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n");
+            System.out.println("Please choose a category:");
+            System.out.println("-------------------------");
+            System.out.println("1. Pizzas");
+            System.out.println("2. Drinks");
+            System.out.println("3. Desserts");
 
-        // if cart > 0
-        // add cart
+            // if cart > 0
+            // add cart
 
-        System.out.println("\n0. Quit");
+            System.out.println("\n0. Quit");
 
-        switch (requestInput(0, 4)) {
-            case 0:
-                System.exit(0);
-                break;
-            case 1:
-                pizzaMenu();
-                break;
+            switch (requestInput()) {
+                case 0:
+                    System.exit(0);
+                    break;
+                case 1:
+                    pizzaMenu();
+                    break;
+            }
         }
-
     }
 
     public int pizzaMenu() {
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n");
         for (int i = 0; i < pizzas.size(); i++) {
             var pizza = pizzas.get(i);
             System.out.printf("%d. %s\n", i + 1, pizzas.get(i).name);
@@ -51,6 +54,8 @@ public class Menu {
             System.out.println("    }\n");
         }
 
+        requestInput();
+
         return -1;
     }
 
@@ -59,21 +64,17 @@ public class Menu {
         menu.mainMenu();
     }
 
-    public int requestInput(int lowerBounds, int upperBounds) {
-        while (true) {
-            System.out.print("Please make a choice: ");
-            String userInput = input.nextLine();
+    public int requestInput() {
+        System.out.print("Please make a choice: ");
+        String userInput = input.nextLine();
 
-            try {
-                int res = Integer.parseInt(userInput);
+        try {
+            int res = Integer.parseInt(userInput);
 
-                if (res >= lowerBounds && res < upperBounds)
-                    return res;
-            } catch (NumberFormatException e) {
-            }
-
-            System.out.println("\nInvalid input you dumbfuck. Press [ENTER] to retry");
-            input.nextLine();
+            return res;
+        } catch (NumberFormatException e) {
         }
+
+        return Integer.MAX_VALUE;
     }
 }
