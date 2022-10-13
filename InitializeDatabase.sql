@@ -39,7 +39,6 @@ CREATE TABLE IF NOT EXISTS PizzaIngredient(
     FOREIGN KEY (IngredientID) REFERENCES Ingredient(ID),
     FOREIGN KEY (PizzaID) REFERENCES Pizza(ID)
 );
-
 -- --
 CREATE TABLE IF NOT EXISTS User(
     Username VARCHAR(255) NOT NULL PRIMARY KEY,
@@ -48,16 +47,23 @@ CREATE TABLE IF NOT EXISTS User(
     Postcode VARCHAR(255) NOT NULL,
     PhoneNumber VARCHAR(255) NOT NULL
 );
-
+-- Delivery personel --
+CREATE TABLE DeliveryStaff(
+    ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(255) NOT NULL,
+    Cuteness FLOAT NOT NULL
+);
 -- --
 CREATE TABLE IF NOT EXISTS OrderEntry(
     ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     Username VARCHAR(255) NOT NULL,
-    OrderTime VARCHAR(255) NOT NULL,
+    OrderTime TIMESTAMP NOT NULL,
     Cancelled BOOLEAN,
-    FOREIGN KEY (Username) REFERENCES User(Username)
+    DeliveryBy INT,
+    Delivered BOOLEAN,
+    FOREIGN KEY (Username) REFERENCES User(Username),
+    FOREIGN KEY (DeliveryBy) REFERENCES DeliveryStaff(ID)
 );
-
 -- --
 CREATE TABLE IF NOT EXISTS OrderContents(
     OrderID INT NOT NULL,
@@ -65,90 +71,6 @@ CREATE TABLE IF NOT EXISTS OrderContents(
     FOREIGN KEY (OrderID) REFERENCES OrderEntry(ID),
     FOREIGN KEY (ConsumableID) REFERENCES Consumable(ID)
 );
--- --
-
-
--- --
--- Add pizzas --
-INSERT INTO Consumable (Name)
-VALUES ("Pepperoni"),
-    ("Hawaiian"),
-    ("Margherita"),
-    ("Mushroom"),
-    ("Salami"),
-    ("BBQ chicken"),
-    ("Vegan");
--- --
-INSERT INTO Pizza
-VALUES (1),
-    (2),
-    (3),
-    (4),
-    (5),
-    (6),
-    (7);
--- --
-INSERT INTO Ingredient (IngredientName, Price, Vegan)
-VALUES ("Mozarella", 1.25, FALSE),
-    ("Pineapple", 2, TRUE),
-    ("Pepperoni", 2, FALSE),
-    ("Pulled beef", 3, FALSE),
-    ("Chicken", 1.5, FALSE),
-    ("Olives", 1, TRUE),
-    ("Tapioca balls", 6, NULL),
-    ("Ham", 3, FALSE),
-    ("Mushroom", 1.25, TRUE),
-    ("Tomato sauce", 1.25, TRUE),
-    ("BBQ sauce", 1.25, TRUE),
-    ("Pumpkin spice", 5, TRUE),
-    ("Salami", 2, FALSE);
--- --
--- Associate pizzas with their ingredients--
-INSERT INTO PizzaIngredient
-VALUES (1, 1),
-    (1, 3),
-    (1, 10),
-    (2, 1),
-    (2, 2),
-    (2, 5),
-    (2, 10),
-    (3, 1),
-    (3, 10),
-    (4, 1),
-    (4, 9),
-    (4, 10),
-    (5, 1),
-    (5, 10),
-    (5, 12),
-    (6, 1),
-    (6, 5),
-    (6, 11),
-    (7, 6),
-    (7, 9),
-    (7, 10);
--- --
--- Add drinks--
-INSERT INTO Consumable (Name)
-VALUES ("Generic brand Cola"),
-    ("Ice Lemon Tea"),
-    ("Red Cow");
-INSERT INTO Drink
-VALUES (8, 2.5),
-    (9, 3.5),
-    (10, 5);
--- --
--- Add desserts--
-INSERT INTO Consumable (Name)
-VALUES (
-        "The sweetest smile from the cutest personnel we have"
-    ),
-    ("Lava cake"),
-    ("Bread sticks");
--- --
-INSERT INTO Dessert
-VALUES (11, 0),
-    (12, 8),
-    (13, 6);
 -- --
 -- Create price chart for Pizza (includes the 1.4x multiplier) --
 CREATE OR REPLACE VIEW PizzaMenu AS
@@ -168,20 +90,16 @@ SELECT Drink.ID AS ConsumableID,
     Drink.Price AS Price
 FROM Drink
     INNER JOIN Consumable ON Drink.ID = Consumable.ID;
-
 -- --
 -- Create price chart for desserts --
-
 CREATE OR REPLACE VIEW DessertMenu AS
 SELECT Dessert.ID AS ConsumableID,
     Consumable.Name AS Name,
     Dessert.Price AS Price
 FROM Dessert
     INNER JOIN Consumable ON Dessert.ID = Consumable.ID;
-
 -- --
 -- Create unified price chart --
-
 CREATE OR REPLACE VIEW Menu AS
 SELECT *,
     "Pizza" as Type
@@ -197,10 +115,24 @@ SELECT *,
     "Dessert" as Type
 FROM DessertMenu
 ORDER BY ConsumableID;
-
 -- --
--- Sample order --
-
-INSERT INTO User VALUES ("Bloom", "Derrick Timmermans", "Molenstraat 60B", "3600", "+60102680158");
-INSERT INTO OrderEntry (Username, OrderTime) VALUES("Bloom", "2022-10-07T15:16:53Z");
-INSERT INTO OrderContents VALUES (1,1),(1,1),(1,1),(1,1),(1,1);
+CREATE TABLE DeliveryArea(
+    DeliveryStaffID INT NOT NULL,
+    Postcode VARCHAR(255) NOT NULL,
+    PRIMARY KEY (DeliveryStaffID, Postcode),
+    FOREIGN KEY (DeliveryStaffID) REFERENCES DeliveryStaff(ID)
+);
+-- --
+-- Fancy method to get pending deliveries --
+CREATE PROCEDURE GetDelivery(deliveryStaffID INT) BEGIN
+SELECT o.*,
+    User.Postcode AS Postcode,
+    DeliveryArea.DeliveryStaffID AS Deliverer
+FROM OrderEntry o
+    INNER JOIN User ON o.Username = User.Username
+    INNER JOIN DeliveryArea ON User.Postcode = DeliveryArea.Postcode
+WHERE Cancelled IS NOT TRUE
+    AND o.DeliveryBy IS NULL
+    AND DeliveryArea.DeliveryStaffID = deliveryStaffID
+ORDER BY o.OrderTime;
+END
