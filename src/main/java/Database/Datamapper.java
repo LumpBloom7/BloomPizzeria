@@ -1,25 +1,14 @@
 package Database;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import Database.Entities.Consumable;
 import Database.Entities.User;
 
 public class Datamapper {
-    public static class DataCreationToken {
-        private DataCreationToken() {
-
-        }
-    }
-
-    private static final DataCreationToken CREATION_TOKEN = new DataCreationToken();
-
     public static <T> ArrayList<T> mapData(Class<T> structType, String sourceTable, String predicate) {
         ArrayList<T> results = new ArrayList<>();
 
@@ -28,7 +17,7 @@ public class Datamapper {
         try {
             var ctor = structType.getConstructor();
 
-            ResultSet resultSet = Database.performQuery(String.format("SELECT * FROM %s %s", sourceTable, predicate));
+            ResultSet resultSet = Database.executeQuery(String.format("SELECT * FROM %s %s", sourceTable, predicate));
 
             while (resultSet.next()) {
                 T record = ctor.newInstance();
@@ -87,15 +76,4 @@ public class Datamapper {
 
         System.out.println(User.getUser("Bloom"));
     }
-
-    private static List<Field> getAllFields(List<Field> fields, Class<?> type) {
-        fields.addAll(Arrays.asList(type.getFields()));
-
-        if (type.getSuperclass() != null) {
-            getAllFields(fields, type.getSuperclass());
-        }
-
-        return fields;
-    }
-
 }

@@ -21,4 +21,14 @@ public abstract class MenuItem {
 
         return res.get(0);
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return !(other instanceof MenuItem otherMenuItem) || consumableID == otherMenuItem.consumableID;
+    }
+
+    @Override
+    public int hashCode() {
+        return Integer.hashCode(consumableID);
+    }
 }

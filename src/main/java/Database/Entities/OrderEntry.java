@@ -1,7 +1,6 @@
 package Database.Entities;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 import Database.Datamapper;

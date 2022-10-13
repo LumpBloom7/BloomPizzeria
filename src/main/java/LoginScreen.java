@@ -2,8 +2,6 @@ import java.util.*;
 
 import Database.Entities.User;
 
-import java.sql.*;
-
 class LoginScreen {
     static User currentUser;
 

@@ -21,18 +21,43 @@ public class Database {
         }
     }
 
-    public static ResultSet performQuery(String query) {
+    public static ResultSet executeQuery(String query) {
         try {
             var statement = conn.createStatement();
             var rs = conn.createStatement().executeQuery(query);
             statement.close();
             return rs;
-        } 
-        catch (SQLException ex) {
+        } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
             System.out.println("VendorError: " + ex.getErrorCode());
         }
         return null;
+    }
+
+    public static boolean executeStatement(String query) {
+        try {
+            var statement = conn.createStatement();
+            var rs = statement.execute(query);
+            statement.close();
+            return rs;
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+        return false;
+    }
+
+    public static int getLastInsertIndex() {
+        try {
+            return executeQuery("SELECT LAST_INSERT_ID()").getInt(1);
+        } catch (SQLException ex) {
+            System.out.println("SQLException: " + ex.getMessage());
+            System.out.println("SQLState: " + ex.getSQLState());
+            System.out.println("VendorError: " + ex.getErrorCode());
+        }
+
+        return -1;
     }
 }
