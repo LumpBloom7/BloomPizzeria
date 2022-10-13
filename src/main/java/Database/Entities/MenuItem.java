@@ -2,7 +2,7 @@ package Database.Entities;
 
 import Database.Datamapper;
 
-public abstract class MenuItem {
+public class MenuItem {
     public int consumableID;
     public String name;
     public float price;
