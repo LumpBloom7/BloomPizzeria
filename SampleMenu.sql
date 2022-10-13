@@ -1,12 +1,12 @@
 -- Add pizzas --
 INSERT INTO Consumable (Name)
-VALUES ("Pepperoni"),
-    ("Hawaiian"),
-    ("Margherita"),
-    ("Mushroom"),
-    ("Salami"),
-    ("BBQ chicken"),
-    ("Vegan");
+VALUES ("Pepperoni Pizza"),
+    ("Hawaiian Pizza"),
+    ("Margherita Pizza"),
+    ("Mushroom Pizza"),
+    ("Salami Pizza"),
+    ("BBQ chicken Pizza"),
+    ("Vegan Pizza");
 -- --
 INSERT INTO Pizza
 VALUES (1),
