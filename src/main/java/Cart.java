@@ -35,7 +35,7 @@ public class Cart {
 
     public void checkout(User user) {
         if (!Database.executeStatement(
-                String.format("INSERT INTO OrderEntry (userName, orderTime, price) VALUES (%s, NOW(), %f)",
+                String.format("INSERT INTO OrderEntry (userName, orderTime, price) VALUES (\"%s\", NOW(), %f)",
                         user.username, getTotalPrice())))
             return;
 
@@ -54,5 +54,17 @@ public class Cart {
             return;
 
         contents.clear();
+    }
+
+    public static void main(String[] args) {
+        Cart cart = new Cart();
+
+        cart.add(MenuItem.getMenuItem(1));
+        cart.add(MenuItem.getMenuItem(2));
+        cart.add(MenuItem.getMenuItem(3));
+        cart.add(MenuItem.getMenuItem(4));
+        cart.add(MenuItem.getMenuItem(4));
+
+        cart.checkout(User.getUser("Bloom"));
     }
 }
