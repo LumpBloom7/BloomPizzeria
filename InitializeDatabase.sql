@@ -70,7 +70,7 @@ CREATE TABLE IF NOT EXISTS OrderEntry(
 CREATE TABLE IF NOT EXISTS OrderContent(
     OrderID INT NOT NULL,
     ConsumableID int NOT NULL,
-    Quantity in NOT NULL,
+    Quantity int NOT NULL,
     FOREIGN KEY (OrderID) REFERENCES OrderEntry(ID),
     FOREIGN KEY (ConsumableID) REFERENCES Consumable(ID),
     PRIMARY KEY (OrderID, ConsumableID)
