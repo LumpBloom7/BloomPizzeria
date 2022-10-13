@@ -38,9 +38,9 @@ public class Database {
     public static boolean executeStatement(String query) {
         try {
             var statement = conn.createStatement();
-            var rs = statement.execute(query);
+            statement.execute(query);
             statement.close();
-            return rs;
+            return true;
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
@@ -51,7 +51,11 @@ public class Database {
 
     public static int getLastInsertIndex() {
         try {
-            return executeQuery("SELECT LAST_INSERT_ID()").getInt(1);
+            var rs = executeQuery("SELECT LAST_INSERT_ID()");
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
         } catch (SQLException ex) {
             System.out.println("SQLException: " + ex.getMessage());
             System.out.println("SQLState: " + ex.getSQLState());
