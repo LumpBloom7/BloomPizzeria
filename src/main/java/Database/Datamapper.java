@@ -55,6 +55,9 @@ public class Datamapper {
                         case "double":
                             field.setDouble(record, resultSet.getDouble(fieldName));
                             break;
+                        case "java.sql.Timestamp":
+                            field.set(record, resultSet.getTimestamp(fieldName));
+                            break;
                     }
                 }
                 results.add(record);
