@@ -1,4 +1,6 @@
 import java.util.HashMap;
+import java.util.Set;
+import java.util.Map.Entry;
 
 import Database.Database;
 import Database.Entities.MenuItem;
@@ -6,6 +8,10 @@ import Database.Entities.User;
 
 public class Cart {
     private HashMap<MenuItem, Integer> contents = new HashMap<>();
+
+    public Set<Entry<MenuItem, Integer>> getContents() {
+        return contents.entrySet();
+    }
 
     public void add(MenuItem item) {
         contents.merge(item, 1, (a, b) -> a + b);
