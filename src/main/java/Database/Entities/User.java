@@ -19,7 +19,7 @@ public class User {
     }
 
     public static User getUser(String username) {
-        var rs = Datamapper.mapData(User.class, "User", "WHERE username = " + username);
+        var rs = Datamapper.mapData(User.class, "User", String.format("WHERE Username = \"%s\"", username));
         if (rs.isEmpty())
             return null;
         else
