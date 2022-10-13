@@ -58,6 +58,8 @@ CREATE TABLE IF NOT EXISTS OrderEntry(
     ID INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     Username VARCHAR(255) NOT NULL,
     OrderTime TIMESTAMP NOT NULL,
+    -- Price is declared here to lock in prices --
+    Price float NOT NULL,
     Cancelled BOOLEAN,
     DeliveryBy INT,
     Delivered BOOLEAN,
@@ -65,11 +67,13 @@ CREATE TABLE IF NOT EXISTS OrderEntry(
     FOREIGN KEY (DeliveryBy) REFERENCES DeliveryStaff(ID)
 );
 -- --
-CREATE TABLE IF NOT EXISTS OrderContents(
+CREATE TABLE IF NOT EXISTS OrderContent(
     OrderID INT NOT NULL,
     ConsumableID int NOT NULL,
+    Quantity in NOT NULL,
     FOREIGN KEY (OrderID) REFERENCES OrderEntry(ID),
-    FOREIGN KEY (ConsumableID) REFERENCES Consumable(ID)
+    FOREIGN KEY (ConsumableID) REFERENCES Consumable(ID),
+    PRIMARY KEY (OrderID, ConsumableID)
 );
 -- --
 -- Create price chart for Pizza (includes the 1.4x multiplier) --
