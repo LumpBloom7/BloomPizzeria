@@ -5,7 +5,7 @@ import Database.Entities.Dessert;
 import Database.Entities.Drink;
 import Database.Entities.Pizza;
 
-public class Menu {
+public class Menu extends Screen {
     public List<Pizza> pizzas = Pizza.getAllPizzas();
     public List<Drink> drink = Drink.getAllDrinks();
     public List<Dessert> desserts = Dessert.getAllDesserts();
@@ -60,19 +60,5 @@ public class Menu {
     public static void main(String[] args) {
         var menu = new Menu();
         menu.mainMenu();
-    }
-
-    public int requestInput() {
-        System.out.print("Please make a choice: ");
-        String userInput = input.nextLine();
-
-        try {
-            int res = Integer.parseInt(userInput);
-
-            return res;
-        } catch (NumberFormatException e) {
-        }
-
-        return Integer.MAX_VALUE;
     }
 }
