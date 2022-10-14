@@ -20,4 +20,22 @@ public abstract class IDatabaseEntity {
 
         return result + "}";
     }
+
+    public String toStringMinimal() {
+        var classInfo = this.getClass();
+        var fields = classInfo.getDeclaredFields();
+
+        String result = "(";
+
+        for (int i = 0; i < fields.length; ++i) {
+            try {
+
+                result = String.format("%s %s: %s%s", result, fields[i].getName(), fields[i].get(this),
+                        i == fields.length - 1 ? "" : ",");
+            } catch (IllegalAccessException e) {
+            }
+        }
+
+        return result + ")";
+    }
 }
