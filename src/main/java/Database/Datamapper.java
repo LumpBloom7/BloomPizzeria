@@ -9,15 +9,17 @@ import Database.Entities.Consumable;
 import Database.Entities.User;
 
 public class Datamapper {
-    public static <T> ArrayList<T> mapData(Class<T> structType, String sourceTable, String predicate) {
+
+    public static <T> ArrayList<T> mapData(Class<T> structType, ResultSet resultSet) {
         ArrayList<T> results = new ArrayList<>();
+
+        if (resultSet == null)
+            return results;
 
         var fields = structType.getFields();
 
         try {
             var ctor = structType.getConstructor();
-
-            ResultSet resultSet = Database.executeQuery(String.format("SELECT * FROM %s %s", sourceTable, predicate));
 
             while (resultSet.next()) {
                 T record = ctor.newInstance();
@@ -65,7 +67,10 @@ public class Datamapper {
         }
 
         return results;
+    }
 
+    public static <T> ArrayList<T> mapData(Class<T> structType, String sourceTable, String predicate) {
+        return mapData(structType, Database.executeQuery(String.format("SELECT * FROM %s %s", sourceTable, predicate)));
     }
 
     public static void main(String[] args) {
