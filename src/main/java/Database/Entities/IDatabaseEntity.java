@@ -12,7 +12,6 @@ public abstract class IDatabaseEntity {
 
         for (int i = 0; i < fields.length; ++i) {
             try {
-
                 result = String.format("%s    %s: %s\n", result, fields[i].getName(), fields[i].get(this));
             } catch (IllegalAccessException e) {
             }
@@ -30,12 +29,12 @@ public abstract class IDatabaseEntity {
         for (int i = 0; i < fields.length; ++i) {
             try {
 
-                result = String.format("%s %s: %s%s", result, fields[i].getName(), fields[i].get(this),
-                        i == fields.length - 1 ? "" : ",");
+                result = String.format("%s%s %s: %s", result, i == 0 ? "" : ",", fields[i].getName(),
+                        fields[i].get(this));
             } catch (IllegalAccessException e) {
             }
         }
 
-        return result + ")";
+        return result + " )";
     }
 }
