@@ -21,7 +21,7 @@ public class DeliveryStaff extends IDatabaseEntity {
 
     public List<OrderEntry> currentOrders() {
         return Datamapper.mapData(OrderEntry.class, "OrderEntry",
-                String.format("WHERE DeliveryBy = %d AND Delivered IS NOT TRUE", id));
+                String.format("WHERE DeliveryBy = %d AND Delivered IS NOT TRUE AND Cancelled IS NOT TRUE", id));
     }
 
     public List<OrderEntry> getEligiblePendingOrders() {
