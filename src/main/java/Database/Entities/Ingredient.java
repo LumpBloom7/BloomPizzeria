@@ -2,7 +2,7 @@ package Database.Entities;
 
 import Database.Datamapper;
 
-public class Ingredient {
+public class Ingredient extends IDatabaseEntity {
     public int ID;
     public String ingredientName;
     public float price;

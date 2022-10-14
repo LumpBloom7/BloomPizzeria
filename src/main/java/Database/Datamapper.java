@@ -6,11 +6,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import Database.Entities.Consumable;
+import Database.Entities.IDatabaseEntity;
 import Database.Entities.User;
 
 public class Datamapper {
 
-    public static <T> ArrayList<T> mapData(Class<T> structType, ResultSet resultSet) {
+    public static <T extends IDatabaseEntity> ArrayList<T> mapData(Class<T> structType, ResultSet resultSet) {
         ArrayList<T> results = new ArrayList<>();
 
         if (resultSet == null)
@@ -69,7 +70,8 @@ public class Datamapper {
         return results;
     }
 
-    public static <T> ArrayList<T> mapData(Class<T> structType, String sourceTable, String predicate) {
+    public static <T extends IDatabaseEntity> ArrayList<T> mapData(Class<T> structType, String sourceTable,
+            String predicate) {
         return mapData(structType, Database.executeQuery(String.format("SELECT * FROM %s %s", sourceTable, predicate)));
     }
 

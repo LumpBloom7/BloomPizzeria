@@ -5,7 +5,7 @@ import java.util.List;
 import Database.Database;
 import Database.Datamapper;
 
-public class DeliveryStaff {
+public class DeliveryStaff extends IDatabaseEntity {
     public int id;
     public String name;
     public float cuteness;

@@ -5,7 +5,7 @@ import java.util.List;
 
 import Database.Datamapper;
 
-public class OrderEntry {
+public class OrderEntry extends IDatabaseEntity {
     public int ID;
     public String username;
     public Timestamp orderTime;
@@ -24,11 +24,4 @@ public class OrderEntry {
 
         return orderContents;
     }
-
-    @Override
-    public String toString() {
-        return String.format("(%d, %s, %s, %f, %b, %d, %b)", ID, username, orderTime, price, cancelled, deliveryBy,
-                delivered);
-    }
-
 }
