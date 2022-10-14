@@ -25,4 +25,10 @@ public class OrderEntry {
         return orderContents;
     }
 
+    @Override
+    public String toString() {
+        return String.format("(%d, %s, %s, %f, %b, %d, %b)", ID, username, orderTime, price, cancelled, deliveryBy,
+                delivered);
+    }
+
 }
