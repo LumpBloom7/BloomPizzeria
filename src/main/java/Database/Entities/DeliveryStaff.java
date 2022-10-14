@@ -49,6 +49,27 @@ public class DeliveryStaff extends IDatabaseEntity {
         return true;
     }
 
+    public boolean dropOrder(int orderID) {
+        // Double check to see if this person is actually handling it
+        // (other delivery staff may have sniped this person.)
+        {
+            boolean found = false;
+            for (var order : currentOrders()) {
+                if (order.ID == orderID)
+                    found = true;
+                break;
+            }
+
+            if (!found)
+                return false;
+        }
+
+        Database.executeStatement(
+                String.format("UPDATE OrderEntry SET DeliveryBy = NULL WHERE ID = %d", orderID));
+
+        return true;
+    }
+
     public boolean markOrderAsDelivered(int orderID) {
         // Double check to see if this person is actually handling it
         // (other delivery staff may have sniped this person.)
