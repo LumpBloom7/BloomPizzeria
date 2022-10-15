@@ -7,7 +7,7 @@ import Database.Entities.Pizza;
 
 public class Menu extends Screen {
     public List<Pizza> pizzas = Pizza.getAllPizzas();
-    public List<Drink> drink = Drink.getAllDrinks();
+    public List<Drink> drinks = Drink.getAllDrinks();
     public List<Dessert> desserts = Dessert.getAllDesserts();
 
     private Scanner input = new Scanner(System.in);
@@ -33,6 +33,12 @@ public class Menu extends Screen {
                 case 1:
                     pizzaMenu();
                     break;
+                case 2:
+                    drinksMenu();
+                    break;
+                case 3:
+                    dessertMenu();
+                    break;
             }
         }
     }
@@ -49,6 +55,36 @@ public class Menu extends Screen {
             for (var ingredient : pizza.getIngredients())
                 System.out.printf("        %s\n", ingredient.ingredientName);
 
+            System.out.println("    }\n");
+        }
+
+        requestInput();
+
+        return -1;
+    }
+
+    public int drinksMenu() {
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n");
+        for (int i = 0; i < drinks.size(); i++) {
+            var drink = drinks.get(i);
+            System.out.printf("%d. %s\n", i + 1, pizzas.get(i).name);
+            System.out.printf("    Price      : %f\n", drink.price);
+            System.out.printf("    Vegan      : %b\n", drink.vegan);
+            System.out.println("    }\n");
+        }
+
+        requestInput();
+
+        return -1;
+    }
+
+    public int dessertMenu() {
+        System.out.println("\n\n\n\n\n\n\n\n\n\n\n\n");
+        for (int i = 0; i < desserts.size(); i++) {
+            var dessert = desserts.get(i);
+            System.out.printf("%d. %s\n", i + 1, pizzas.get(i).name);
+            System.out.printf("    Price      : %f\n", dessert.price);
+            System.out.printf("    Vegan      : %b\n", dessert.vegan);
             System.out.println("    }\n");
         }
 
