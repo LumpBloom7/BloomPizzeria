@@ -161,6 +161,7 @@ public class Menu extends Screen {
                 System.out.printf("%d. %s (x%d)\n", ++i, entry.name, cart.getNumberOf(entry));
             }
 
+            System.out.printf("\n%d. Checkout", i + 2);
             System.out.println("\n0. Back");
 
             var r = requestInput();
@@ -169,6 +170,11 @@ public class Menu extends Screen {
                 case 0:
                     return;
                 default:
+                    if (r == i + 2) {
+                        cart.checkout(user);
+                        return;
+                    }
+
                     var index = r - 1;
                     if (index >= contents.length)
                         break;
