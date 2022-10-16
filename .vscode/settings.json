@@ -13,5 +13,10 @@
             "username": "root",
             "database": "BloomPizzeria"
         }
-    ]
+    ],
+    "[sql]": {
+        "editor.formatOnSave": false,
+        "editor.formatOnType": false,
+        "editor.formatOnPaste": false,
+    }
 }
