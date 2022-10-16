@@ -6,7 +6,7 @@ public abstract class IDatabaseEntity {
     @Override
     public String toString() {
         var classInfo = this.getClass();
-        var fields = classInfo.getDeclaredFields();
+        var fields = classInfo.getFields();
 
         String result = "{\n";
 
@@ -22,7 +22,7 @@ public abstract class IDatabaseEntity {
 
     public String toStringMinimal() {
         var classInfo = this.getClass();
-        var fields = classInfo.getDeclaredFields();
+        var fields = classInfo.getFields();
 
         String result = "(";
 

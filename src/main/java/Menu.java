@@ -1,7 +1,9 @@
 import java.util.List;
+import java.util.Map.Entry;
 
 import Database.Entities.Dessert;
 import Database.Entities.Drink;
+import Database.Entities.MenuItem;
 import Database.Entities.Pizza;
 import Database.Entities.User;
 
@@ -48,7 +50,8 @@ public class Menu extends Screen {
                 case 4:
                     if (!cart.hasItems())
                         break;
-                    // Do stuff
+
+                    showCart();
                     break;
             }
         }
@@ -142,6 +145,69 @@ public class Menu extends Screen {
 
                     cart.add(desserts.get(index));
                     break;
+            }
+        }
+    }
+
+    public void showCart() {
+        while (true) {
+            clearConsole();
+            System.out.println("Cart");
+            System.out.println("----\n");
+
+            int i = 0;
+
+            var contents = cart.getItems();
+            for (var entry : contents) {
+                System.out.printf("%d. %s (x%d)\n", ++i, entry.name, cart.getNumberOf(entry));
+            }
+
+            System.out.println("\n0. Back");
+
+            var r = requestInput();
+
+            switch (r) {
+                case 0:
+                    return;
+                default:
+                    var index = r - 1;
+                    if (index >= contents.length)
+                        break;
+
+                    cartEntryDetails(contents[index]);
+            }
+        }
+    }
+
+    public void cartEntryDetails(MenuItem item) {
+        while (true) {
+            clearConsole();
+
+            System.out.println("Cart entry details");
+            System.out.println("------------------\n");
+
+            System.out.println(item);
+            System.out.println("Quantity: " + cart.getNumberOf(item));
+
+            System.out.println();
+            System.out.println("1. Add another");
+            System.out.println("2. Remove one");
+            System.out.println("3. Remove all");
+            System.out.println("");
+            System.out.println("0. Back");
+
+            switch (requestInput()) {
+                case 1:
+                    cart.add(item);
+                    break;
+                case 2:
+                    cart.remove(item);
+                    break;
+                case 3:
+                    cart.removeAll(item);
+                    break;
+                case 0:
+                    return;
             }
         }
     }

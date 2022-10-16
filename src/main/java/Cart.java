@@ -1,6 +1,4 @@
 import java.util.HashMap;
-import java.util.Set;
-import java.util.Map.Entry;
 
 import Database.Database;
 import Database.Entities.MenuItem;
@@ -9,8 +7,15 @@ import Database.Entities.User;
 public class Cart {
     private HashMap<MenuItem, Integer> contents = new HashMap<>();
 
-    public Set<Entry<MenuItem, Integer>> getContents() {
-        return contents.entrySet();
+    public MenuItem[] getItems() {
+        return contents.keySet().toArray(new MenuItem[contents.size()]);
+    }
+
+    public int getNumberOf(MenuItem item) {
+        if (!contents.containsKey(item))
+            return 0;
+
+        return contents.get(item);
     }
 
     public boolean hasItems() {
@@ -38,6 +43,10 @@ public class Cart {
 
         if (contents.get(item) <= 0)
             contents.remove(item);
+    }
+
+    public void removeAll(MenuItem item) {
+        contents.remove(item);
     }
 
     public void clear() {
