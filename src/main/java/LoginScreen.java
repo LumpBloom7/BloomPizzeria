@@ -1,17 +1,11 @@
-import java.util.*;
-
 import Database.Entities.User;
 
-class LoginScreen {
-    static User currentUser;
+class LoginScreen extends Screen {
 
     public static String inputLoginUsername() {
-        Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter username");
-        String usernameInput = scanner.nextLine();
-        String[] resultingUsername = usernameInput.split(" ", 2);
-        scanner.close();
-        return resultingUsername[0];
+        System.out.print("Enter username: ");
+        String usernameInput = input.nextLine();
+        return usernameInput;
     }
     /*
      * public String inputLoginPassword(){
@@ -25,18 +19,23 @@ class LoginScreen {
      */
 
     public static void LoginSequence() {
-        String username = inputLoginUsername();
-        if (User.UserExists(username)) {
+        clearConsole();
+
+        while (true) {
+            System.out.println("\nWelcome to BloomPizzeria!!!\n");
+            String username = inputLoginUsername();
             User user = User.getUser(username);
-            currentUser = user;
-            System.out.println(user.toString());
-        } else {
-            System.out.println("Username does not exist.");
+
+            if (user != null) {
+                new Menu(user).mainMenu();
+            } else {
+                clearConsole();
+                System.out.println("Username does not exist.");
+            }
         }
     }
 
     public static void main(String[] args) {
         LoginSequence();
     }
-
 }

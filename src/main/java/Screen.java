@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public abstract class Screen {
-    private static Scanner input = new Scanner(System.in);
+    protected final static Scanner input = new Scanner(System.in);
 
     protected final static int requestInput() {
         System.out.print("Please make a choice: ");
