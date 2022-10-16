@@ -7,7 +7,7 @@ VALUES ("Pepperoni Pizza"),
     ("Salami Pizza"),
     ("BBQ chicken Pizza"),
     ("Vegan Pizza");
--- --
+
 INSERT INTO Pizza
 VALUES (1),
     (2),
@@ -16,7 +16,7 @@ VALUES (1),
     (5),
     (6),
     (7);
--- --
+
 INSERT INTO Ingredient (IngredientName, Price, Vegan)
 VALUES ("Mozarella", 1.25, FALSE),
     ("Pineapple", 2, TRUE),
@@ -31,7 +31,7 @@ VALUES ("Mozarella", 1.25, FALSE),
     ("BBQ sauce", 1.25, TRUE),
     ("Pumpkin spice", 5, TRUE),
     ("Salami", 2, FALSE);
--- --
+
 -- Associate pizzas with their ingredients--
 INSERT INTO PizzaIngredient
 VALUES (1, 1),
@@ -55,17 +55,18 @@ VALUES (1, 1),
     (7, 6),
     (7, 9),
     (7, 10);
--- --
+
 -- Add drinks--
 INSERT INTO Consumable (Name)
 VALUES ("Generic brand Cola"),
     ("Ice Lemon Tea"),
     ("Red Cow");
+
 INSERT INTO Drink
 VALUES (8, 2.5),
     (9, 3.5),
     (10, 5);
--- --
+
 -- Add desserts--
 INSERT INTO Consumable (Name)
 VALUES (
@@ -73,7 +74,7 @@ VALUES (
     ),
     ("Lava cake"),
     ("Bread sticks");
--- --
+
 INSERT INTO Dessert
 VALUES (11, 0),
     (12, 8),
