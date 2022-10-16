@@ -27,7 +27,7 @@ class LoginScreen extends Screen {
             User user = User.getUser(username);
 
             if (user != null) {
-                new Menu(user).mainMenu();
+                new UserPanel(user).mainMenu();
             } else {
                 clearConsole();
                 System.out.println("Username does not exist.");

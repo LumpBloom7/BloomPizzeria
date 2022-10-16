@@ -36,8 +36,7 @@ public class Menu extends Screen {
 
             switch (requestInput()) {
                 case 0:
-                    System.exit(0);
-                    break;
+                    return;
                 case 1:
                     pizzaMenu();
                     break;
