@@ -10,6 +10,8 @@ public class Menu extends Screen {
     public List<Drink> drinks = Drink.getAllDrinks();
     public List<Dessert> desserts = Dessert.getAllDesserts();
 
+    private final Cart cart = new Cart();
+
     private final User user;
 
     public Menu(User user) {
@@ -25,8 +27,8 @@ public class Menu extends Screen {
             System.out.println("2. Drinks");
             System.out.println("3. Desserts");
 
-            // if cart > 0
-            // add cart
+            if (cart.hasItems())
+                System.out.printf("\n4. Cart (%d items)\n", cart.itemCount());
 
             System.out.println("\n0. Quit");
 
@@ -43,58 +45,105 @@ public class Menu extends Screen {
                 case 3:
                     dessertMenu();
                     break;
+                case 4:
+                    if (!cart.hasItems())
+                        break;
+                    // Do stuff
+                    break;
             }
         }
     }
 
-    public int pizzaMenu() {
-        clearConsole();
-        for (int i = 0; i < pizzas.size(); i++) {
-            var pizza = pizzas.get(i);
-            System.out.printf("%d. %s\n", i + 1, pizzas.get(i).name);
-            System.out.printf("    Price      : %f\n", pizza.price);
-            System.out.printf("    Vegan      : %b\n", pizza.vegan);
-            System.out.printf("    Ingredients: {\n");
+    public void pizzaMenu() {
+        while (true) {
+            clearConsole();
+            for (int i = 0; i < pizzas.size(); i++) {
+                var pizza = pizzas.get(i);
+                System.out.printf("%d. %s\n", i + 1, pizza.name);
+                System.out.printf("    Price      : %f\n", pizza.price);
+                System.out.printf("    Vegan      : %b\n", pizza.vegan);
+                System.out.printf("    Ingredients: {\n");
 
-            for (var ingredient : pizza.getIngredients())
-                System.out.printf("        %s\n", ingredient.ingredientName);
+                for (var ingredient : pizza.getIngredients())
+                    System.out.printf("        %s\n", ingredient.ingredientName);
 
-            System.out.println("    }\n");
+                System.out.println("    }\n");
+            }
+
+            System.out.println("0. Back");
+
+            int r = requestInput();
+
+            switch (r) {
+                case 0:
+                    return;
+                default:
+                    var index = r - 1;
+                    if (index >= pizzas.size())
+                        break;
+
+                    cart.add(pizzas.get(index));
+                    break;
+            }
         }
-
-        requestInput();
-
-        return -1;
     }
 
-    public int drinksMenu() {
-        clearConsole();
-        for (int i = 0; i < drinks.size(); i++) {
-            var drink = drinks.get(i);
-            System.out.printf("%d. %s\n", i + 1, pizzas.get(i).name);
-            System.out.printf("    Price      : %f\n", drink.price);
-            System.out.printf("    Vegan      : %b\n", drink.vegan);
-            System.out.println("    }\n");
+    public void drinksMenu() {
+        while (true) {
+            clearConsole();
+            for (int i = 0; i < drinks.size(); i++) {
+                var drink = drinks.get(i);
+                System.out.printf("%d. %s\n", i + 1, drink.name);
+                System.out.printf("    Price      : %f\n", drink.price);
+                System.out.printf("    Vegan      : %b\n", drink.vegan);
+                System.out.println("    }\n");
+            }
+
+            System.out.println("0. Back");
+
+            int r = requestInput();
+
+            switch (r) {
+                case 0:
+                    return;
+                default:
+                    var index = r - 1;
+                    if (index >= drinks.size())
+                        break;
+
+                    cart.add(drinks.get(index));
+                    break;
+            }
         }
-
-        requestInput();
-
-        return -1;
     }
 
-    public int dessertMenu() {
-        clearConsole();
-        for (int i = 0; i < desserts.size(); i++) {
-            var dessert = desserts.get(i);
-            System.out.printf("%d. %s\n", i + 1, pizzas.get(i).name);
-            System.out.printf("    Price      : %f\n", dessert.price);
-            System.out.printf("    Vegan      : %b\n", dessert.vegan);
-            System.out.println("    }\n");
+    public void dessertMenu() {
+        while (true) {
+            clearConsole();
+            for (int i = 0; i < desserts.size(); i++) {
+                var dessert = desserts.get(i);
+                System.out.printf("%d. %s\n", i + 1, dessert.name);
+                System.out.printf("    Price      : %f\n", dessert.price);
+                System.out.printf("    Vegan      : %b\n", dessert.vegan);
+                System.out.println("    }\n");
+            }
+
+            System.out.println("0. Back");
+
+            int r = requestInput();
+
+            switch (r) {
+                case 0:
+                    return;
+                default:
+                    var index = r - 1;
+                    if (index >= desserts.size())
+                        break;
+
+                    cart.add(desserts.get(index));
+                    break;
+            }
         }
-
-        requestInput();
-
-        return -1;
     }
 
     public static void main(String[] args) {

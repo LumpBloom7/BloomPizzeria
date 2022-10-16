@@ -13,6 +13,19 @@ public class Cart {
         return contents.entrySet();
     }
 
+    public boolean hasItems() {
+        return contents.size() > 0;
+    }
+
+    public int itemCount() {
+        var sum = 0;
+        for (var item : contents.entrySet()) {
+            sum += item.getValue();
+        }
+
+        return sum;
+    }
+
     public void add(MenuItem item) {
         contents.merge(item, 1, (a, b) -> a + b);
     }
