@@ -7,6 +7,8 @@ import Database.Entities.User;
 public class Cart {
     private HashMap<MenuItem, Integer> contents = new HashMap<>();
 
+    private boolean usingCoupon = false;
+
     public MenuItem[] getItems() {
         return contents.keySet().toArray(new MenuItem[contents.size()]);
     }
@@ -62,9 +64,11 @@ public class Cart {
     }
 
     public void checkout(User user) {
+        var finalPrice = getTotalPrice() * (usingCoupon ? 0.9f : 1f);
+
         if (!Database.executeStatement(
-                String.format("INSERT INTO OrderEntry (userName, orderTime, price) VALUES (\"%s\", NOW(), %f)",
-                        user.username, getTotalPrice())))
+                String.format("INSERT INTO OrderEntry (userName, orderTime, price) VALUES (\"%s\", NOW(), %.2f)",
+                        user.username, finalPrice)))
             return;
 
         var index = Database.getLastInsertIndex();
@@ -82,6 +86,14 @@ public class Cart {
             return;
 
         contents.clear();
+    }
+
+    public boolean couponApplied() {
+        return usingCoupon;
+    }
+
+    public void toggleCoupon() {
+        usingCoupon = !usingCoupon;
     }
 
     public static void main(String[] args) {

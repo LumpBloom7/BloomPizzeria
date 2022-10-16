@@ -79,6 +79,11 @@ CREATE TABLE IF NOT EXISTS OrderContent(
     PRIMARY KEY (OrderID, ConsumableID)
 );
 
+CREATE TABLE IF NOT EXISTS CouponUses(
+    Username VARCHAR(255) PRIMARY KEY,
+    CouponUses int
+);
+
 -- Create price chart for Pizza (includes the 1.4x multiplier) --
 CREATE OR REPLACE VIEW PizzaMenu AS
 SELECT PizzaIngredient.PizzaID AS ConsumableID,
@@ -130,8 +135,24 @@ CREATE TABLE DeliveryArea(
     FOREIGN KEY (DeliveryStaffID) REFERENCES DeliveryStaff(ID)
 );
 
--- Fancy method to get pending deliveries --
 DELIMITER //
+
+-- Fancy method to get the number of coupons a user has --
+CREATE PROCEDURE GetNumberOfCoupons(userName VARCHAR(255)) BEGIN
+SELECT (c.Quantity - COALESCE(CouponUses.CouponUses, 0)) AS NumberOfCoupons
+FROM (
+        SELECT userName AS Username,
+            (Floor(Sum(Quantity) / 10)) AS Quantity
+        FROM OrderContent c
+            INNER JOIN OrderEntry ON c.OrderID = OrderEntry.ID
+            INNER JOIN Pizza ON c.ConsumableID = Pizza.ID
+        WHERE OrderEntry.Username = userName
+            AND OrderEntry.Cancelled IS NOT TRUE
+    ) AS c
+    LEFT JOIN CouponUses ON c.Username = CouponUses.Username;
+END//
+
+-- Fancy method to get pending deliveries --
 CREATE PROCEDURE GetDelivery(deliveryStaffID INT) BEGIN
 SELECT o.*,
     User.Postcode AS Postcode,
@@ -143,5 +164,13 @@ WHERE Cancelled IS NOT TRUE
     AND o.DeliveryBy IS NULL
     AND DeliveryArea.DeliveryStaffID = deliveryStaffID
 ORDER BY o.OrderTime;
+END //
+
+-- Fancy method to increment the number of used coupons --
+CREATE PROCEDURE IncrementCouponUses(userName VARCHAR(255)) BEGIN
+INSERT INTO CouponUses (Username, CouponUses)
+    VALUES (userName, 1)
+    ON DUPLICATE KEY
+    UPDATE CouponUses = CouponUses + 1;
 END //
 DELIMITER ;

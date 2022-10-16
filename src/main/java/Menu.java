@@ -171,8 +171,9 @@ public class Menu extends Screen {
                     return;
                 default:
                     if (r == i + 2) {
-                        cart.checkout(user);
-                        return;
+                        if (checkoutReview())
+                            return;
+                        break;
                     }
 
                     var index = r - 1;
@@ -213,6 +214,54 @@ public class Menu extends Screen {
                     break;
                 case 0:
                     return;
+            }
+        }
+    }
+
+    public boolean checkoutReview() {
+        while (true) {
+            clearConsole();
+
+            System.out.println("Review order");
+            System.out.println("------------\n");
+
+            System.out.println("Items:");
+            for (var item : cart.getItems())
+                System.out.printf("    %s (x%d)\n", item.toStringMinimal(), cart.getNumberOf(item));
+
+            System.out.println();
+            var fullPrice = cart.getTotalPrice();
+            float priceWithoutVAT = fullPrice * 0.91f;
+            float VAT = fullPrice * 0.09f;
+            float finalPrice = fullPrice;
+
+            System.out.printf("Price (w/o VAT): %.3f\n", priceWithoutVAT);
+            System.out.printf("VAT: %.3f\n", VAT);
+
+            if (cart.couponApplied()) {
+                finalPrice *= 0.9f;
+                System.out.printf("Discount: %.3f\n", -(fullPrice * 0.1f));
+            }
+
+            System.out.printf("---------------------\n");
+            System.out.printf("Total price: %.2f\n", finalPrice);
+
+            System.out.println();
+            System.out.println("1. Confirm");
+            if (user.hasCoupons())
+                System.out.printf("2. %s \"10%% off\" coupon\n", cart.couponApplied() ? "Remove" : "Apply");
+
+            System.out.println("\n\n0. Wait wait wait I've changed my mind.");
+
+            switch (requestInput()) {
+                case 0:
+                    return false;
+                case 1:
+                    cart.checkout(user);
+                    return true;
+                case 2:
+                    cart.toggleCoupon();
+                    break;
             }
         }
     }

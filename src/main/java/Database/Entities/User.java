@@ -1,5 +1,8 @@
 package Database.Entities;
 
+import java.sql.SQLException;
+
+import Database.Database;
 import Database.Datamapper;
 
 /*
@@ -23,5 +26,17 @@ public class User extends IDatabaseEntity {
 
     public static boolean UserExists(String username) {
         return getUser(username) != null;
+    }
+
+    public boolean hasCoupons() {
+        var rs = Database.executeQuery(String.format("CALL GetNumberOfCoupons(\"%s\")", username));
+
+        try {
+            if (rs.next())
+                return rs.getInt(1) > 0;
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+        return false;
     }
 }
