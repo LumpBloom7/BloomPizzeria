@@ -36,8 +36,12 @@ public class OrderEntry extends IDatabaseEntity {
         return rs.get(0);
     }
 
+    public boolean canBeCancelled() {
+        return !orderTime.toInstant().plusSeconds(300).isBefore(Instant.now());
+    }
+
     public boolean tryCancelOrder() {
-        if (orderTime.toInstant().plusSeconds(1800).isBefore(Instant.now()))
+        if (!canBeCancelled())
             return false;
 
         return Database.executeStatement(String.format("UPDATE OrderEntry SET Cancelled = TRUE WHERE ID = %d", ID));
