@@ -98,7 +98,6 @@ public class Menu extends Screen {
                 System.out.printf("%d. %s\n", i + 1, drink.name);
                 System.out.printf("    Price      : %f\n", drink.price);
                 System.out.printf("    Vegan      : %b\n", drink.vegan);
-                System.out.println("    }\n");
             }
 
             System.out.println("0. Back");
@@ -127,7 +126,6 @@ public class Menu extends Screen {
                 System.out.printf("%d. %s\n", i + 1, dessert.name);
                 System.out.printf("    Price      : %f\n", dessert.price);
                 System.out.printf("    Vegan      : %b\n", dessert.vegan);
-                System.out.println("    }\n");
             }
 
             System.out.println("0. Back");
