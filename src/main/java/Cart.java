@@ -85,6 +85,7 @@ public class Cart {
         if (!Database.executeStatement(contentStatement))
             return;
 
+        Database.executeStatement(String.format("CALL IncrementCouponUses(\"%s\")", user.username));
         contents.clear();
     }
 
