@@ -68,7 +68,8 @@ public class Cart {
         var finalPrice = getTotalPrice() * (usingCoupon ? 0.9f : 1f);
 
         if (!Database.executeStatement(
-                String.format("INSERT INTO OrderEntry (userName, orderTime, price) VALUES (\"%s\", NOW(), %.2f)",
+                String.format(Locale.US,
+                        "INSERT INTO OrderEntry (userName, orderTime, price) VALUES (\"%s\", NOW(), %.2f)",
                         user.username, finalPrice)))
             return;
 
@@ -79,7 +80,7 @@ public class Cart {
         String contentStatement = "INSERT INTO OrderContent VALUES";
         int i = 0;
         for (var pair : contents.entrySet()) {
-            contentStatement = String.format(Locale.US, "%s (%d, %d, %d) %s", contentStatement, index,
+            contentStatement = String.format("%s (%d, %d, %d) %s", contentStatement, index,
                     pair.getKey().consumableID,
                     pair.getValue(), ++i == contents.size() ? ";" : ",");
         }
