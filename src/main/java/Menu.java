@@ -299,9 +299,4 @@ public class Menu extends Screen {
 
         }
     }
-
-    public static void main(String[] args) {
-        var menu = new Menu(User.getUser("Bloom"));
-        menu.mainMenu();
-    }
 }

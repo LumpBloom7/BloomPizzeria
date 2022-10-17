@@ -130,11 +130,4 @@ public class DeliveryPanel extends Screen {
             }
         }
     }
-
-    public static void main(String[] args) {
-        var panel = new DeliveryPanel(DeliveryStaff.getDeliveryStaff(1));
-
-        panel.mainMenu();
-    }
-
 }
