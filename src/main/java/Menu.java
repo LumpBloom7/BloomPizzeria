@@ -247,7 +247,7 @@ public class Menu extends Screen {
             System.out.println();
             System.out.println("1. Confirm");
             if (user.hasCoupons())
-                System.out.printf("2. %s \"10%% off\" coupon\n", cart.couponApplied() ? "Remove" : "Apply");
+                System.out.printf("2. Enter coupon\n");
 
             System.out.println("\n\n0. Wait wait wait I've changed my mind.");
 
@@ -258,9 +258,45 @@ public class Menu extends Screen {
                     cart.checkout(user);
                     return true;
                 case 2:
-                    cart.toggleCoupon();
+                    couponEntry();
                     break;
             }
+        }
+    }
+
+    public void couponEntry() {
+
+        boolean couponApplied = false;
+        boolean couponInvalid = false;
+        while (true) {
+            clearConsole();
+            System.out.println("Coupon entry");
+            System.out.println("------------\n");
+
+            System.out.println(couponApplied ? "Coupon applied!" : couponInvalid ? "Invalid coupon!" : "");
+
+            System.out.println();
+
+            System.out.println("Type in your coupon code.");
+            System.out.println("Type \"Back\" to return.");
+            System.out.println("Retype coupon to remove it.\n");
+            System.out.print("Input: ");
+
+            String userIn = input.nextLine();
+
+            couponApplied = couponInvalid = false;
+            switch (userIn.toLowerCase()) {
+                case "10for10off":
+                    cart.toggleCoupon();
+                    couponApplied = true;
+                    break;
+                case "back":
+                    return;
+                default:
+                    couponInvalid = true;
+                    break;
+            }
+
         }
     }
 

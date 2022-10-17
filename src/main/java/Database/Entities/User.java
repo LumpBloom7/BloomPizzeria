@@ -39,4 +39,12 @@ public class User extends IDatabaseEntity {
         }
         return false;
     }
+
+    public boolean registerUser() {
+        var rs = Database.executeStatement(String.format(
+                "INSERT INTO User(Username, Name, Address, Postcode, Phonenumber) VALUES (\"%s\", \"%s\", \"%s\", \"%s\", \"%s\")",
+                username, name, address, postcode, phoneNumber));
+
+        return rs;
+    }
 }
