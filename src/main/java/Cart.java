@@ -1,4 +1,5 @@
 import java.util.HashMap;
+import java.util.Locale;
 
 import Database.Database;
 import Database.Entities.MenuItem;
@@ -78,7 +79,8 @@ public class Cart {
         String contentStatement = "INSERT INTO OrderContent VALUES";
         int i = 0;
         for (var pair : contents.entrySet()) {
-            contentStatement = String.format("%s (%d, %d, %d) %s", contentStatement, index, pair.getKey().consumableID,
+            contentStatement = String.format(Locale.US, "%s (%d, %d, %d) %s", contentStatement, index,
+                    pair.getKey().consumableID,
                     pair.getValue(), ++i == contents.size() ? ";" : ",");
         }
 
