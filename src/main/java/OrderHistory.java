@@ -12,30 +12,33 @@ public class OrderHistory extends Screen {
     }
 
     public void listOrders() {
-        System.out.println("Order history");
-        System.out.println("-------------\n");
+        while (true) {
+            clearConsole();
+            System.out.println("Order history");
+            System.out.println("-------------\n");
 
-        var orders = Datamapper.mapData(OrderEntry.class,
-                Database.executeQuery(
-                        String.format("SELECT * FROM OrderEntry WHERE Username = \"%s\"", user.username)));
+            var orders = Datamapper.mapData(OrderEntry.class,
+                    Database.executeQuery(
+                            String.format("SELECT * FROM OrderEntry WHERE Username = \"%s\"", user.username)));
 
-        for (int i = 0; i < orders.size(); ++i)
-            System.out.printf("%d. %s\n", i + 1, orders.get(orders.size() - 1 - i).toStringMinimal());
+            for (int i = 0; i < orders.size(); ++i)
+                System.out.printf("%d. %s\n", i + 1, orders.get(orders.size() - 1 - i).toStringMinimal());
 
-        System.out.println("0. Back");
+            System.out.println("0. Back");
 
-        var r = requestInput();
+            var r = requestInput();
 
-        switch (r) {
-            case 0:
-                return;
-            default:
-                var index = (r - 1);
-                if (index >= orders.size())
+            switch (r) {
+                case 0:
+                    return;
+                default:
+                    var index = (r - 1);
+                    if (index >= orders.size())
+                        break;
+
+                    orderDetails(orders.get(orders.size() - 1 - index));
                     break;
-
-                orderDetails(orders.get(orders.size() - 1 - index));
-                break;
+            }
         }
 
     }
