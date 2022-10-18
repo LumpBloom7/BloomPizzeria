@@ -51,9 +51,11 @@ VALUES (4, 1, 56);
 -- Delivery staff --
 INSERT INTO DeliveryStaff(Name, Cuteness)
 VALUES ("Menno", 0.1),
-    ("Florescence", 10);
+    ("Florescence", 10),
+    ("Bernard", 3);
 
 INSERT INTO DeliveryArea
 VALUES (1, "3600"),
     (2, "3600"),
-    (2, "36002");
+    (2, "36002"),
+    (3, "12345");
